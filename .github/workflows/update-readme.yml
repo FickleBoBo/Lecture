@@ -1,0 +1,32 @@
+name: Update README Table
+
+on:
+  push:
+    paths:
+      - "inflearn.xlsx"
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.12
+
+      - name: Install dependencies and run script
+        run: |
+          pip install pandas openpyxl tabulate
+          python convert_excel_to_readme.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "FickleBoBo"
+          git config --local user.email "yukmw0704@gmail.com"
+          git add README.md
+          git commit -m "Update README.md"
+          git push
